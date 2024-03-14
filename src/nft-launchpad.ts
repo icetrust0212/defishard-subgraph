@@ -1,4 +1,4 @@
-import { JSONValue, TypedMap, json, log, near } from "@graphprotocol/graph-ts";
+import { BigInt, JSONValue, TypedMap, json, log, near } from "@graphprotocol/graph-ts";
 import { ZERO_BI } from "./constants";
 import {Collection, User} from "../generated/schema";
 
@@ -25,16 +25,13 @@ function handleAction(
 
   for (let logIndex = 0; logIndex < outcome.logs.length; logIndex++) {
     let outcomeLog = outcome.logs[logIndex].toString();
-    log.warning("Block logs {}", [outcomeLog]);
     if (outcomeLog.startsWith('EVENT_JSON:')) {
       outcomeLog = outcomeLog.replace('EVENT_JSON:', '');
-      outcomeLog = outcomeLog.replace(', data_source: NFTLaunchpad, component: UserMapping', '');
       const jsonData = json.try_fromString(outcomeLog);
       const jsonObject = jsonData.value.toObject();
       const event = jsonObject.get('event')!;
       const dataArr = jsonObject.get('data')!.toArray();
       const dataObj: TypedMap<string, JSONValue> = dataArr[0].toObject();
-      log.warning("Block logs {}{}", [event.toString(), jsonData.value.toString()]);
 
       handleEvent(methodName, event.toString(), dataObj, receipt);
     }
@@ -57,6 +54,7 @@ function handleEvent(
     let collection = Collection.load(collection_id);
     if (collection == null) {
       collection = new Collection(collection_id);
+      collection.timestamp = BigInt.fromU64(receipt.block.header.timestampNanosec);
     }
     collection.creator = creator_id;
     collection.name = name;

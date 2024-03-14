@@ -6,6 +6,8 @@ type Collection @entity {
   totalSupply: BigInt!
 
   creator: User!
+
+  timestamp: BigInt!
 }
 
 type User @entity {
