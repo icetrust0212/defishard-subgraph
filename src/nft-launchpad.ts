@@ -28,6 +28,7 @@ function handleAction(
     log.warning("Block logs {}", [outcomeLog]);
     if (outcomeLog.startsWith('EVENT_JSON:')) {
       outcomeLog = outcomeLog.replace('EVENT_JSON:', '');
+      outcomeLog = outcomeLog.replace(', data_source: NFTLaunchpad, component: UserMapping', '');
       const jsonData = json.try_fromString(outcomeLog);
       const jsonObject = jsonData.value.toObject();
       const event = jsonObject.get('event')!;
@@ -46,7 +47,7 @@ function handleEvent(
   data: TypedMap<string, JSONValue>,
   receipt: near.ReceiptWithOutcome
 ): void {
-  if (methodName == "Launch") {
+  if (methodName.toLowerCase() == "launch") {
     const creator_id = data.get("creator_id")!.toString();
     const collection_id = data.get("collection_id")!.toString();
     const name = data.get("name")!.toString();
