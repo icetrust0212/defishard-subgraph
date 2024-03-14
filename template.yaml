@@ -1,0 +1,19 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: near
+    name: NFTLaunchpad
+    network: {{network}}
+    source:
+      account: "{{NFTLaunchpad.account}}"
+      startBlock: {{NFTLaunchpad.block}}
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities: 
+        - Collection
+        - User
+      receiptHandlers:
+        - handler: handleReceipt
+      file: ./src/nft-launchpad.ts

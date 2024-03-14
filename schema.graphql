@@ -1,0 +1,16 @@
+type Collection @entity {
+  id: ID!
+
+  name: String!
+  symbol: String!
+  totalSupply: BigInt!
+
+  creator: User!
+}
+
+type User @entity {
+  id: ID!
+  name: String!
+
+  collections: [Collection!] @derivedFrom(field: "creator")
+}

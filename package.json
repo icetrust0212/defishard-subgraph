@@ -1,0 +1,19 @@
+{
+  "name": "binary-options-subgraph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build:dev": "yarn prepare:dev && yarn codegen && graph build",
+    "prepare:dev": "mustache ./config/near-testnet.json template.yaml > subgraph.yaml",
+    "deploy:dev": "yarn prepare:dev && yarn codegen && graph deploy --product hosted-service icetrust0212/defishards-test",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.68.0",
+    "@graphprotocol/graph-ts": "^0.32.0",
+    "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
+}

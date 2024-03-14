@@ -1,0 +1,8 @@
+{
+    "network": "near-testnet",
+    "NFTLaunchpad": {
+      "account": "benz-launchpad1.testnet",
+      "block": 159088129
+    }
+  }
+  
