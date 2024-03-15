@@ -8,6 +8,12 @@ type Collection @entity {
   creator: User!
 
   timestamp: BigInt!
+
+  price: BigDecimal
+  currency: String
+
+  payment_split_percent: String
+  base_uri: String
 }
 
 type User @entity {

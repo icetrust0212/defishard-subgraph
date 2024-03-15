@@ -1,4 +1,4 @@
-import { BigInt, JSONValue, TypedMap, json, log, near } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, JSONValue, TypedMap, json, log, near } from "@graphprotocol/graph-ts";
 import { ZERO_BI } from "./constants";
 import {Collection, User} from "../generated/schema";
 
@@ -27,6 +27,8 @@ function handleAction(
     let outcomeLog = outcome.logs[logIndex].toString();
     if (outcomeLog.startsWith('EVENT_JSON:')) {
       outcomeLog = outcomeLog.replace('EVENT_JSON:', '');
+      log.warning("Event: {}", [outcomeLog]);
+
       const jsonData = json.try_fromString(outcomeLog);
       const jsonObject = jsonData.value.toObject();
       const event = jsonObject.get('event')!;
@@ -49,6 +51,10 @@ function handleEvent(
     const collection_id = data.get("collection_id")!.toString();
     const name = data.get("name")!.toString();
     const symbol = data.get("symbol")!.toString();
+    const price = data.get("mint_price");
+    const currency = data.get("mint_currency");
+    const base_uri = data.get("base_uri");
+    const payment_split_percent = data.get("payment_split_percent");
     const totalSupply = ZERO_BI;
     
     let collection = Collection.load(collection_id);
@@ -60,6 +66,20 @@ function handleEvent(
     collection.name = name;
     collection.symbol = symbol;
     collection.totalSupply = totalSupply;
+
+    if (price) {
+      collection.price = BigDecimal.fromString(price.toString());
+    }
+    
+    if (currency) {
+      collection.currency = currency.toString();
+    }
+    if (base_uri) {
+      collection.base_uri = base_uri.toString();
+    }
+    if (payment_split_percent) {
+      collection.payment_split_percent = payment_split_percent.toString();
+    }
 
     collection.save();
 
