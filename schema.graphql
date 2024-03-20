@@ -3,7 +3,7 @@ type Collection @entity {
 
   name: String!
   symbol: String!
-  totalSupply: BigInt!
+  totalSupply: String
 
   creator: User!
 

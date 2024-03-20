@@ -1,7 +1,7 @@
 {
     "network": "near-testnet",
     "NFTLaunchpad": {
-      "account": "defishard-launchpad.testnet",
+      "account": "test-defishard.testnet",
       "block": 	159517573
     }
   }

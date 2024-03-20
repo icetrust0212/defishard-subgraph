@@ -55,7 +55,7 @@ function handleEvent(
     const currency = data.get("mint_currency");
     const base_uri = data.get("base_uri");
     const payment_split_percent = data.get("payment_split_percent");
-    const totalSupply = ZERO_BI;
+    const totalSupply = data.get("total_supply");
     
     let collection = Collection.load(collection_id);
     if (collection == null) {
@@ -65,7 +65,9 @@ function handleEvent(
     collection.creator = creator_id;
     collection.name = name;
     collection.symbol = symbol;
-    collection.totalSupply = totalSupply;
+    if (totalSupply) {
+      collection.totalSupply = totalSupply.toString();
+    }
 
     if (price) {
       collection.price = BigDecimal.fromString(price.toString());
